@@ -20,6 +20,23 @@ var Tetris = function(){
 		next: null
 	};
 	
+	// @param action {left | right | down | pause | restart}
+	this.key_handle = function(action){
+		switch (action){
+			case 'left':
+				debug('tetris: move left (-1)');
+				block.current.move({left: -1, top:0}, 'once');
+				break;
+			case 'right':
+				debug('tetris: move right (1)');
+				block.current.move({left: 1, top:0}, 'once');
+				break;
+			default:
+				;
+		}
+	};
+	
+	var key_proc = new KeyBd(this);
 		
 	// @param: current_block
 	// @param: next_block
