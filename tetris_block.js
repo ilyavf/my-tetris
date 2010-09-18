@@ -42,7 +42,7 @@ var Block = function(pg){
 }
 
 Block.prototype = {
-	timeout_interval: 40,
+	timeout_interval: 100,
 	debug: function(txt, open){ txt = txt.replace(/^\@/,this.debug_title); debug(txt, open); return 1; },
 	
 	constructor: Block,
@@ -53,14 +53,13 @@ Block.prototype = {
 	
 	init: function(){
 		var type_num = (this.block_count % Block.prototype.types.length);
-		debug('type_num=' + type_num);
 		this.type = this.types[type_num];
 		
 		Block.prototype.block_count++;
 		this.id  = 'block_container_' + Block.prototype.block_count;
 		this.debug_title = '[Block, '+this.type+', '+this.id+']: ';
 		
-		this.debug("@init");
+		//this.debug("@init");
 		switch (this.type){
 			case 'I':
 				this.matrix = [
@@ -101,7 +100,7 @@ Block.prototype = {
 	},
 	draw: function(prop){
 		
-		this.debug('@draw');
+		//this.debug('@draw');
 		
 		if (document.getElementById(this.id) != null){
 			
@@ -113,7 +112,6 @@ Block.prototype = {
 		var colors = ['fcf','ffc','cff','ccf','cfc','000'];
 		var color = colors[this.color];
 		var cell_size = this.pg.cell_size;
-		debug('@top_offset: ' + top_offset);
 		
 		//create main div:
 		this.container = {
@@ -151,31 +149,53 @@ Block.prototype = {
 		this.count = 0;
 		this.callback = callback;
 		var self = this;
+		this.debug('@- startMove', 'open');
 		this.interval = setTimeout(function(){self.move();}, this.timeout_interval);
 	},
 	stopMove: function(){
 		//clearInterval(this.interval);
-		this.debug('@- stopMove, clearInterval, callback.');
+		this.debug('@- stopMove, clearInterval, callback.', 'close');
 		this.callback(this); //{coor: this.coor, type: this.type}
 	},
-	move: function(){
+	move: function(info, perpetuum){
+		var info = info || {};
+		var dx = info.left || 0;
+		var dy = typeof info.top == 'undefined' ? 1 : info.top;
+		var perpetuum = perpetuum || true;
+		this.debug('move: dx = ' + dx + ', dy = ' + dy + ' (' + info + ')');
+		
 		this.count++;
 		var el_container = document.getElementById(this.container.prop.id);
+
+		this.new_coor.left = this.coor.cleft() + dx;
+		this.debug('- new coor left = + ' + dx);
 		
-		this.new_coor.left = this.coor.cleft();
-		this.new_coor.top = this.coor.ctop() + 1;
+		this.new_coor.top = this.coor.ctop() + dy;
+		//this.debug('new coor top = + ' + dy + ' = ' + this.new_coor.top);
 		
 		if ( !this.pg.isNextDownCellFree(this) ){
-			this.stopMove();
+			if (dx == 0){
+				this.stopMove();
+			}
 			return 0;
 		}
-		//this.debug('@- new_top = ' + new_top);
-		//this.coor.cleft(this.new_coor.left);
-		this.coor.ctop(this.new_coor.top);
 		
-		var self = this;
-		this.interval = setTimeout(function(){self.move();}, this.timeout_interval);
+		//this.debug('@- new_top = ' + new_top);
+		if (dx != 0){
+			this.debug('- move to left = + ' + dx);
+			this.coor.cleft(this.new_coor.left);
+		}
+		if (dy != 0){
+			//this.debug('move to top = + ' + dy + ' = ' + this.new_coor.top);
+			this.coor.ctop(this.new_coor.top);
+		}
+		
+		if (perpetuum === true){
+			var self = this;
+			this.interval = setTimeout(function(){self.move();}, this.timeout_interval);
+		}
 	}
+	
 }
 
 
