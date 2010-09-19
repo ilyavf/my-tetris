@@ -12,6 +12,7 @@ var Block = function(pg){
 	
 	this.matrix = []; // describe the block
 	this.rotation = 0;
+	this.move_enable = false;
 	
 	this.pg = pg;
 	
@@ -146,6 +147,7 @@ Block.prototype = {
 		}
 	},
 	startMove: function(callback){
+		this.move_enable = true;
 		this.count = 0;
 		this.callback = callback;
 		var self = this;
@@ -153,11 +155,15 @@ Block.prototype = {
 		this.interval = setTimeout(function(){self.move();}, this.timeout_interval);
 	},
 	stopMove: function(){
+		this.move_enable = false;
 		//clearInterval(this.interval);
 		this.debug('@- stopMove, clearInterval, callback.', 'close');
 		this.callback(this); //{coor: this.coor, type: this.type}
 	},
 	move: function(info, perpetuum){
+		if (this.move_enable === false){
+			return 0;
+		}
 		var info = info || {};
 		var dx = info.left || 0;
 		var dy = typeof info.top == 'undefined' ? 1 : info.top;

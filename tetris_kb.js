@@ -10,7 +10,7 @@ var KeyBd = function(tetris){
 	}
 
 	var eventHandle = function(e){
-		debug('keypressed: ' + e.charCode + ', ' + e.keyCode);
+		//debug('keypressed: ' + e.charCode + ', ' + e.keyCode);
 		tetris.key_handle(key_map[e.charCode + '_' + e.keyCode]);
 	}
 	
