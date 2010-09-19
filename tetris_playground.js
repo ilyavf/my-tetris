@@ -64,31 +64,32 @@ PlayGround.prototype = {
 		// input: coor of left-top corner and block type => insert '1' into matrix where applicable:
 		// ...
 		
-		var cleft 	= block.coor.cleft();
-		var ctop 	= block.coor.ctop();
+		var left 	= block.coor.left();
+		var top 	= block.coor.top();
 		
-		this.debug('@[appendBlock]: coor=' + cleft + ', ' + ctop + ', type='+block.type + ', (' + block.coor.cleft() + ', ' + block.coor.ctop() + ')', 'open');
+		this.debug('@[appendBlock]: coor=' + left + ', ' + top + ', type='+block.type + ', (' + block.coor.left() + ', ' + block.coor.top() + ')', 'open');
 		for (var i = 0; i < block.matrix.length; i++){
 			for (var j = 0; j < block.matrix[0].length; j++){
 				if (block.matrix[i][j] == 1){
-					this.debug('(' + (i+ctop) + ', ' + (j+cleft+1) + ')' );
-					this.matrix[i+ctop][j+cleft+1] = 1;
+					this.debug('(' + (i+top) + ', ' + (j+left+1) + ')' );
+					this.matrix[i+top][j+left+1] = 1;
 				}
 			}
 		}
 		this.debug('','close');
 	},
-	isNextDownCellFree: function(block){
-		var cleft 	= block.new_coor.left;
-		var ctop	= block.new_coor.top;
-		//this.debug('[isNextDownCellFree]: ctop=' + ctop + ', top=' + block.coor.top + ', this.cell_size=' + this.cell_size, 'open' );
+	// @param block_info {new_coor, matrix}
+	isCellFree: function(block_info){
+		var left 	= block_info.new_coor.left;
+		var top	= block_info.new_coor.top;
+		//this.debug('[isCellFree]: top=' + top + ', top=' + block_info.coor.top + ', this.cell_size=' + this.cell_size, 'open' );
 		
-		for (var i = 0; i < block.matrix.length; i++){
-			for (var j = 0; j < block.matrix[0].length; j++){
-				if (typeof this.matrix[i+ctop] === 'undefined')
-					this.debug('UNDEFINED: for i+ctop = ' + (i+ctop) );
-				if (block.matrix[i][j] == 1
-					&& this.matrix[i+ctop][j+cleft+1] != 0
+		for (var i = 0; i < block_info.matrix.length; i++){
+			for (var j = 0; j < block_info.matrix[0].length; j++){
+				if (typeof this.matrix[i+top] === 'undefined')
+					this.debug('UNDEFINED: for i+top = ' + (i+top) );
+				if (block_info.matrix[i][j] == 1
+					&& this.matrix[i+top][j+left+1] != 0
 				){
 					//this.debug('@stop: i='+i+', j='+j);
 					//this.debug('','close');
@@ -96,7 +97,7 @@ PlayGround.prototype = {
 				}
 			}
 		}
-		//this.debug('@'+ cleft + ',' + ctop +' - is free');
+		//this.debug('@'+ left + ',' + top +' - is free');
 		//this.debug('','close');
 		
 		return true;
@@ -110,10 +111,10 @@ PlayGround.prototype = {
 		// remove prev from DOM:
 		hint_el.removeChild(prev_block);
 		
-		var start_position_cleft = parseInt( (5 / 2) - (block.matrix[0].length / 2) );
-		var start_position_ctop = parseInt( (5 / 2) - (block.matrix.length / 2) );
+		var start_position_left = parseInt( (5 / 2) - (block.matrix[0].length / 2) );
+		var start_position_top = parseInt( (5 / 2) - (block.matrix.length / 2) );
 		
-		//debug('@left: ' + start_position_cleft + ', top: ' + start_position_ctop);
-		block.draw( {cleft: start_position_cleft, ctop: start_position_ctop, parent_id: this.domIds.hint} );
+		//debug('@left: ' + start_position_left + ', top: ' + start_position_top);
+		block.draw( {left: start_position_left, top: start_position_top, parent_id: this.domIds.hint} );
 	}
 }

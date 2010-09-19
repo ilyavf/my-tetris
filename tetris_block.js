@@ -17,24 +17,27 @@ var Block = function(pg){
 	this.pg = pg;
 	
 	this.coor_val = {
-		cleft: 0,
-		ctop: 0
-	}
-	
-	this.coor = {
-		cleft: function(val){
-			if (typeof val === 'undefined'){ 
-				return self.coor_val.cleft;
-			}
-			self.coor_val.cleft = val;
-			set_left(self.id, val * self.pg.cell_size);
-		},
-		ctop: function(val){
-			if (typeof val === 'undefined') 
-				return self.coor_val.ctop;
-			self.coor_val.ctop = val;
-			set_top(self.id, val * self.pg.cell_size);
+		left: 0,
+		top: 0
+	};
+	this.coor = function(){
+		return {
+			left: this.coor_val.left,
+			top: this.coor_val.top
 		}
+	};
+	this.coor.left = function(val){
+		if (typeof val === 'undefined'){ 
+			return self.coor_val.left;
+		}
+		self.coor_val.left = val;
+		set_left(self.id, val * self.pg.cell_size);
+	};
+	this.coor.top = function(val){
+		if (typeof val === 'undefined') 
+			return self.coor_val.top;
+		self.coor_val.top = val;
+		set_top(self.id, val * self.pg.cell_size);
 	};
 	
 	this.new_coor = {};
@@ -108,8 +111,8 @@ Block.prototype = {
 		}
 		
 		var len = this.matrix.length;
-		var left_offset = prop.cleft * 40 || 20;
-		var top_offset = prop.ctop * 40 || 20;
+		var left_offset = prop.left * 40 || 20;
+		var top_offset = prop.top * 40 || 20;
 		var colors = ['fcf','ffc','cff','ccf','cfc','000'];
 		var color = colors[this.color];
 		var cell_size = this.pg.cell_size;
@@ -125,8 +128,8 @@ Block.prototype = {
 			}
 		}
 		createDom(this.container, prop.parent_id);//'tetris_field'
-		this.coor.cleft(prop.cleft);
-		this.coor.ctop(prop.ctop);
+		this.coor.left(prop.left);
+		this.coor.top(prop.top);
 		
 		for (var i=0; i<len; i++){
 			for (var j=0; j<len; j++){
@@ -147,6 +150,10 @@ Block.prototype = {
 		}
 	},
 	startMove: function(callback){
+		if ( !this.pg.isCellFree({new_coor: this.coor(), matrix: this.matrix}) ){
+			this.debug("@cannot start move.");
+			return false;
+		}
 		this.move_enable = true;
 		this.count = 0;
 		this.callback = callback;
@@ -173,13 +180,13 @@ Block.prototype = {
 		this.count++;
 		var el_container = document.getElementById(this.container.prop.id);
 
-		this.new_coor.left = this.coor.cleft() + dx;
-		this.debug('- new coor left = + ' + dx);
+		this.new_coor.left = this.coor.left() + dx;
+		//this.debug('- new coor left = + ' + dx);
 		
-		this.new_coor.top = this.coor.ctop() + dy;
+		this.new_coor.top = this.coor.top() + dy;
 		//this.debug('new coor top = + ' + dy + ' = ' + this.new_coor.top);
 		
-		if ( !this.pg.isNextDownCellFree(this) ){
+		if ( !this.pg.isCellFree({new_coor: this.new_coor, matrix: this.matrix}) ){
 			if (dx == 0){
 				this.stopMove();
 			}
@@ -189,11 +196,11 @@ Block.prototype = {
 		//this.debug('@- new_top = ' + new_top);
 		if (dx != 0){
 			this.debug('- move to left = + ' + dx);
-			this.coor.cleft(this.new_coor.left);
+			this.coor.left(this.new_coor.left);
 		}
 		if (dy != 0){
 			//this.debug('move to top = + ' + dy + ' = ' + this.new_coor.top);
-			this.coor.ctop(this.new_coor.top);
+			this.coor.top(this.new_coor.top);
 		}
 		
 		if (perpetuum === true){

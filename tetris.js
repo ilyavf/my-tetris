@@ -44,8 +44,8 @@ var Tetris = function(){
 		
 		// temporaryly generate only 4 blocks:
 		i++;
-		if (i > 4){
-			debug( 'pg_matrix: ' + self.pg.matrix );
+		if (i > 30){
+			debug( 'i=' + i + ', pg_matrix: ' + self.pg.matrix );
 			return 0;
 		}
 		
@@ -66,9 +66,10 @@ var Tetris = function(){
 		block.next = new Block(self.pg);
 		self.pg.showNextBlock(block.next);
 		
-		var start_position_cleft = parseInt( (self.pg.cwidth / 2) - (block.current.matrix[0].length / 2) );
+		var start_position_left = parseInt( (self.pg.cwidth / 2) - (block.current.matrix[0].length / 2) );
+		debug('' + (self.pg.cwidth / 2) + ' - ' + (block.current.matrix[0].length / 2) + " = start_position_left = " + start_position_left + ', ');
 		
-		block.current.draw({cleft: start_position_cleft, parent_id: self.pg.domIds.block_field}); //parseInt(5*Math.random())
+		block.current.draw({left: start_position_left, parent_id: self.pg.domIds.block_field}); //parseInt(5*Math.random())
 		block.current.startMove(arguments.callee);
 		
 		
