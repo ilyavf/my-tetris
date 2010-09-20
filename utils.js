@@ -156,4 +156,15 @@ var _debug = function(debug_id, txt, open){
 		start_tag + '<span '+num_style+'>' + debug_count + '</span>' + ': ' + txt + end_tag );*/
 }
 
+// @param direction {L | R}
+var MatrixTrans = function(matrix, direction){
+	var matrix_t = [];
+	for (var i = 0; i < matrix[0].length; i++){
+		matrix_t[i] = [];
+		for (var j = 0; j < matrix.length; j++){
+			matrix_t[i][j] = matrix[j][matrix[0].length - 1 - i];
+		}
+	}
+	return matrix_t;
+}
 

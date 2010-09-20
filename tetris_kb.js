@@ -3,6 +3,7 @@ var KeyBd = function(tetris){
 
 	var key_map = {
 		'0_37': 'left',
+		'0_38': 'rotate_left',
 		'0_39': 'right',
 		'0_40': 'down',
 		'112_0': 'pause',

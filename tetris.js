@@ -3,6 +3,13 @@ var i = -1;
 var Tetris_start = function() {
 
 	var t = new Tetris();
+	
+	/*var m1 = Block.prototype.get_matrix('L');
+	debug('m1 = ' + m1);
+	m1 = MatrixTrans(m1);
+	debug('trans m1 #1 = ' + m1);
+	m1 = MatrixTrans(m1);
+	debug('trans m1 #2 = ' + m1);*/
 
 }
 
@@ -34,6 +41,10 @@ var Tetris = function(){
 			case 'down':
 				debug('tetris: move right (1)');
 				block.current.move({left: 0, top:1}, 'once');
+				break;
+			case 'rotate_left':
+				debug('tetris: rotate_left');
+				block.current.rotate('left');
 				break;
 			default:
 				;
