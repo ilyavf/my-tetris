@@ -9,6 +9,9 @@ var PlayGround = function(domId, cwidth, cheight){
 	this.cwidth 	= cwidth  || 10;
 	this.cheight 	= cheight || 15;
 	this.cell_size 	= 20;
+	
+	this.width	= this.cwidth * this.cell_size;
+	this.height	= this.cheight * this.cell_size;
 
 	this.matrix = [];
 	this.init();
@@ -18,16 +21,22 @@ PlayGround.prototype = {
 	
 	constructor: PlayGround,
 	init: function() {
-		this.draw_structure();
 		this.clearMatrix();
+		this.draw_structure();
 	},
+	
 	clearMatrix: function() {
 		for (var i=0; i<this.cheight+1; i++){
 			this.matrix[i] = [];
 			for (var j=0; j<this.cwidth+2; j++){	
-				if (j == 0 || j == this.cwidth+1 || i == this.cheight){
-					this.matrix[i][j] = 4;
-				} else {
+				if (j == this.cwidth+1 || i == this.cheight){
+					this.matrix[i][j] = '#';
+				} else if (j == 0){
+				
+					// put id of horisontal containers here:
+					this.matrix[i][j] = i + 1;
+				
+				} else  {
 					this.matrix[i][j] = 0;
 				}
 			}
@@ -35,13 +44,11 @@ PlayGround.prototype = {
 		//this.debug('@matrix:' + this.matrix);
 	},
 	draw_structure: function(){
-		var width 	= this.cwidth * this.cell_size;
-		var height 	= this.cheight * this.cell_size;
 		
 		var styles = '#' + this.domIds.main + 
 			'{border: 1px dotted gray; width: 400px; height: 305px; margin-left: 620px; position: relative;}\n';
 		styles += '#' + this.domIds.block_field + 
-			'{border: 1px solid red; width:'+width+'px; height:'+height+'px; position: absolute; top:0px; left:30px;}\n';
+			'{border: 1px solid red; width:'+this.width+'px; height:'+this.height+'px; position: absolute; top:0px; left:30px;}\n';
 		styles += '#' + this.domIds.hint + 
 			'{border: 1px dotted green; width: 100px; height: 100px; position:absolute; top:60px; left: 260px;}\n';
 		styles += '</style>\n';
@@ -57,6 +64,33 @@ PlayGround.prototype = {
 				prop: {id: this.domIds.hint}}
 			]
 		} );
+		
+		// draw lines to append block's cells:
+		this.draw_horiz_lines();
+	},
+	
+	draw_horiz_lines: function(){
+		var line_mnt = this.matrix.length - 1;
+		for (var i = 0; i < line_mnt; i++){
+			this.draw_horiz_line(i);
+		}
+		this.debug('@draw_horiz_lines: ' + i + ' out of ' + line_mnt);
+	},
+	
+	draw_horiz_line: function(id_num, offset){
+		var offset_px = offset * this.cell_size || 0;
+		var div_info = {
+			type: 'div',
+			prop: {
+				id: "tettis_horiz_line_" + id_num,
+				style: "border: 1px red dotted; width: " + this.width + "px; height: " + this.cell_size + "px" +
+					"position: absolute; left: 0; top: " + offset + "px;" +
+					"margin: 1px 0;"
+			},
+			text: id_num
+		};
+		createDom(div_info, this.domIds.block_field);
+		this.debug('@draw_horiz_line ('+id_num+', '+offset+')');
 	},
 	
 	// when block stops append its squares to matrix:
@@ -66,6 +100,14 @@ PlayGround.prototype = {
 		
 		var left 	= block.coor.left();
 		var top 	= block.coor.top();
+		
+		// 1. fill in playground horizontal line containers with cells from appended block
+		// 2. delete the block
+		// 3. if the line if full then:
+		// 	3.1. remove matrix row(s)
+		// 	3.2. add new matrix row(s) to the top
+		// 	3.3. remove line(s)
+		//	3.4. move upper lines down +1(+n)
 		
 		this.debug('@[appendBlock]: coor=' + left + ', ' + top + ', type='+block.type + ', (' + block.coor.left() + ', ' + block.coor.top() + ')', 'open');
 		for (var i = 0; i < block.matrix.length; i++){
