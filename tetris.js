@@ -31,19 +31,19 @@ var Tetris = function(){
 	this.key_handle = function(action){
 		switch (action){
 			case 'left':
-				debug('tetris: move left (-1)');
+				//debug('tetris: move left (-1)');
 				block.current.move({left: -1, top:0}, 'once');
 				break;
 			case 'right':
-				debug('tetris: move right (1)');
+				//debug('tetris: move right (1)');
 				block.current.move({left: 1, top:0}, 'once');
 				break;
 			case 'down':
-				debug('tetris: move right (1)');
+				//debug('tetris: move down');
 				block.current.move({left: 0, top:1}, 'once');
 				break;
 			case 'rotate_left':
-				debug('tetris: rotate_left');
+				//debug('tetris: rotate_left');
 				block.current.rotate('left');
 				break;
 			default:

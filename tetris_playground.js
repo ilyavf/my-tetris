@@ -39,7 +39,7 @@ PlayGround.prototype = {
 		var height 	= this.cheight * this.cell_size;
 		
 		var styles = '#' + this.domIds.main + 
-			'{border: 1px dotted gray; width: 600px; height: 305px; margin-left: 620px; position: relative;}\n';
+			'{border: 1px dotted gray; width: 400px; height: 305px; margin-left: 620px; position: relative;}\n';
 		styles += '#' + this.domIds.block_field + 
 			'{border: 1px solid red; width:'+width+'px; height:'+height+'px; position: absolute; top:0px; left:30px;}\n';
 		styles += '#' + this.domIds.hint + 

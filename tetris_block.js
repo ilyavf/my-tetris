@@ -184,7 +184,7 @@ Block.prototype = {
 		var dx = info.left || 0;
 		var dy = typeof info.top == 'undefined' ? 1 : info.top;
 		var perpetuum = perpetuum || true;
-		this.debug('move: dx = ' + dx + ', dy = ' + dy + ' (' + info + ')');
+		//this.debug('move: dx = ' + dx + ', dy = ' + dy + ' (' + info + ')');
 		
 		this.count++;
 		var el_container = document.getElementById(this.container.prop.id);
@@ -204,7 +204,7 @@ Block.prototype = {
 		
 		//this.debug('@- new_top = ' + new_top);
 		if (dx != 0){
-			this.debug('- move to left = + ' + dx);
+			//this.debug('- move to left = ' + dx);
 			this.coor.left(this.new_coor.left);
 		}
 		if (dy != 0){
