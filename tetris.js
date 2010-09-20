@@ -31,6 +31,10 @@ var Tetris = function(){
 				debug('tetris: move right (1)');
 				block.current.move({left: 1, top:0}, 'once');
 				break;
+			case 'down':
+				debug('tetris: move right (1)');
+				block.current.move({left: 0, top:1}, 'once');
+				break;
 			default:
 				;
 		}
@@ -70,7 +74,10 @@ var Tetris = function(){
 		debug('' + (self.pg.cwidth / 2) + ' - ' + (block.current.matrix[0].length / 2) + " = start_position_left = " + start_position_left + ', ');
 		
 		block.current.draw({left: start_position_left, parent_id: self.pg.domIds.block_field}); //parseInt(5*Math.random())
-		block.current.startMove(arguments.callee);
+		var start_result = block.current.startMove(arguments.callee);
+		if (start_result == 'END'){
+			debug( '@i=' + i + ', pg_matrix: ' + self.pg.matrix );
+		}
 		
 		
 	})();	

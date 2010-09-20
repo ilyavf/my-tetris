@@ -91,7 +91,7 @@ PlayGround.prototype = {
 				if (block_info.matrix[i][j] == 1
 					&& this.matrix[i+top][j+left+1] != 0
 				){
-					//this.debug('@stop: i='+i+', j='+j);
+					this.debug('@stop: i='+i+', j='+j);
 					//this.debug('','close');
 					return false;
 				}

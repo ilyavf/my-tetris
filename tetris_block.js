@@ -46,7 +46,7 @@ var Block = function(pg){
 }
 
 Block.prototype = {
-	timeout_interval: 100,
+	timeout_interval: 500,
 	debug: function(txt, open){ txt = txt.replace(/^\@/,this.debug_title); debug(txt, open); return 1; },
 	
 	constructor: Block,
@@ -112,7 +112,7 @@ Block.prototype = {
 		
 		var len = this.matrix.length;
 		var left_offset = prop.left * 40 || 20;
-		var top_offset = prop.top * 40 || 20;
+		var top_offset = prop.top * 40 || 0;
 		var colors = ['fcf','ffc','cff','ccf','cfc','000'];
 		var color = colors[this.color];
 		var cell_size = this.pg.cell_size;
@@ -151,8 +151,8 @@ Block.prototype = {
 	},
 	startMove: function(callback){
 		if ( !this.pg.isCellFree({new_coor: this.coor(), matrix: this.matrix}) ){
-			this.debug("@cannot start move.");
-			return false;
+			this.debug("@cannot start move. THE END.");
+			return 'END';
 		}
 		this.move_enable = true;
 		this.count = 0;
