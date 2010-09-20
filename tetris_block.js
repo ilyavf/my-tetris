@@ -7,9 +7,6 @@ var Block = function(pg){
 	this.id;
 	this.debug_title;
 	
-	//var block_container = document.getElementById(this.id);
-	
-	
 	this.matrix = []; // describe the block
 	this.rotation = 0;
 	this.move_enable = false;
@@ -20,6 +17,8 @@ var Block = function(pg){
 		left: 0,
 		top: 0
 	};
+	this.new_coor = {};
+	
 	this.coor = function(){
 		return {
 			left: this.coor_val.left,
@@ -40,7 +39,6 @@ var Block = function(pg){
 		set_top(self.id, val * self.pg.cell_size);
 	};
 	
-	this.new_coor = {};
 	
 	this.init();
 }
@@ -70,7 +68,7 @@ Block.prototype = {
 			case 'Z':
 				matrix = [
 					[1,1,0],
-					[0,1,0],
+					//[0,1,0],
 					[0,1,1]
 				];
 				break;
