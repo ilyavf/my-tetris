@@ -11,8 +11,11 @@ Array.prototype.toString = function(){
 	var str = '<br />[ ';
 	var delim = '';
 	for (x in this){
-		str += delim + this[x];
-		delim = ', ';
+		// to show only elements of array (to skip 'to String in Chrome browser.')
+		if (parseInt(x) >= 0 ){
+			str += delim + this[x];
+			delim = ', ';
+		}
 	}
 	return str + ' ]';
 }
@@ -26,6 +29,9 @@ function createDom(info, parent){
 	// to enable debug comment the next line:
 	var debug = function(){return 1};
 	
+	if (!info.prop || !info.prop.id){
+		debug('ERROR: undefined prop in createDom(' + info + ', ' + parent + ')');
+	}
 	debug('[createDom(' + info.prop.id + ', parent)]: ', 'open');
 	var el = document.createElement(info.type);
 	
@@ -62,9 +68,14 @@ function createDom(info, parent){
 	
 	// add children:
 	if (typeof info.children != 'undefined'){
+		debug('- children: ' + info.children.length);
 		for (var x in info.children){
-			debug('- child: ' + info.children[x].prop.id);
-			createDom(info.children[x], el);
+			var child_id = 'unknown';
+			if (info.children[x].prop && info.children[x].prop.id){
+				child_id = info.children[x].prop.id;
+				createDom(info.children[x], el);
+			}
+			debug('- (' + x + ' - ' + (parseInt(x) >= 0) + ') child: ' + child_id);
 		}
 	}
 	
