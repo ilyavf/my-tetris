@@ -16,15 +16,15 @@ var KeyBd = function(tetris){
 	}
 	
 	if ( document.addEventListener ) {
-		debug('document.addEventListener');
+		debug('[KeyBd]: document.addEventListener');
 		document.addEventListener( type, eventHandle, false );
 
 	} else if ( document.attachEvent ) {
-		debug('document.attachEvent');
+		debug('[KeyBd]: document.attachEvent');
 		document.attachEvent( "on" + type, eventHandle );
 		
 	} else {
-		debug("Error: cannot add event listener for keypress.");
+		debug("[KeyBd]: Error: cannot add event listener for keypress.");
 	}
 
 	

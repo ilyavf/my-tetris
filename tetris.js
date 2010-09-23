@@ -2,6 +2,8 @@
 var i = -1;
 var Tetris_start = function() {
 
+	debug('Starting Tetris...');
+
 	var t = new Tetris();
 	
 	/*var m1 = Block.prototype.get_matrix('L');

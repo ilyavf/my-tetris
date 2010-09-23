@@ -78,6 +78,7 @@ PlayGround.prototype = {
 	},
 	
 	draw_horiz_line: function(id_num, offset){
+		//this.debug('@[draw_horiz_line]: ');
 		var offset_px = offset * this.cell_size || 0;
 		var div_info = {
 			type: 'div',
@@ -90,7 +91,7 @@ PlayGround.prototype = {
 			text: id_num
 		};
 		createDom(div_info, this.domIds.block_field);
-		this.debug('@draw_horiz_line ('+id_num+', '+offset+')');
+		//this.debug('@draw_horiz_line ('+id_num+', offset='+offset+')');
 	},
 	
 	// when block stops append its squares to matrix:
