@@ -12,6 +12,8 @@ var Tetris_start = function() {
 	debug('trans m1 #1 = ' + m1);
 	m1 = MatrixTrans(m1);
 	debug('trans m1 #2 = ' + m1);*/
+	
+	//var key_proc = new KeyBd(this);
 
 }
 
@@ -53,7 +55,7 @@ var Tetris = function(){
 		}
 	};
 	
-	var key_proc = new KeyBd(this);
+	var key_proc = new KeyBd(this.key_handle);
 		
 	// @param: current_block
 	// @param: next_block

@@ -1,4 +1,4 @@
-var KeyBd = function(tetris){
+var KeyBd = function(key_handle){
 	var type = 'keypress';
 
 	var key_map = {
@@ -11,8 +11,12 @@ var KeyBd = function(tetris){
 	}
 
 	var eventHandle = function(e){
-		//debug('keypressed: ' + e.charCode + ', ' + e.keyCode);
-		tetris.key_handle(key_map[e.charCode + '_' + e.keyCode]);
+		debug('keypressed: ' + e.charCode + ', ' + e.keyCode);
+		if (typeof key_handle === 'undefined'){
+			debug('[KeyBd]: Error: no key event handle function is defined.');
+			return 0;
+		}
+		key_handle(key_map[e.charCode + '_' + e.keyCode]);
 	}
 	
 	if ( document.addEventListener ) {
