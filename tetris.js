@@ -74,7 +74,7 @@ var Tetris = function(){
 		
 		// temporaryly generate only 4 blocks:
 		i++;
-		if (i > 10){
+		if (i > 20){
 			debug( 'i=' + i + ', pg_matrix: ' + self.pg.matrix );
 			return 0;
 		}
