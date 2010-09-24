@@ -34,7 +34,7 @@ PlayGround.prototype = {
 				} else if (j == 0){
 				
 					// put id of horisontal containers here:
-					this.matrix[i][j] = i + 1;
+					this.matrix[i][j] = this.cheight - i - 1;
 				
 				} else  {
 					this.matrix[i][j] = 0;
@@ -84,7 +84,7 @@ PlayGround.prototype = {
 		
 		var line_mnt = this.matrix.length - 1;
 		for (var i = 0; i < line_mnt; i++){
-			this.draw_horiz_line(i+1, i);
+			this.draw_horiz_line((line_mnt - 1 - i), i);
 		}
 		this.debug('@draw_horiz_lines: ' + i + ' out of ' + line_mnt);
 	},
@@ -95,7 +95,7 @@ PlayGround.prototype = {
 		var div_info = {
 			type: 'div',
 			prop: {
-				id: "tettis_horiz_line_" + id_num,
+				id: "tetris_horiz_line_" + id_num,
 				style: "top: " + offset_px + "px;",
 				className: "horis_lines"
 			},
@@ -122,10 +122,14 @@ PlayGround.prototype = {
 		//	3.4. move upper lines down +1(+n)
 		
 		this.debug('@[appendBlock]: coor=' + left + ', ' + top + ', type='+block.type + ', (' + block.coor.left() + ', ' + block.coor.top() + ')', 'open');
+		
+		var full_line_nums = [];
+		
+		// go through BLOCK MATRIX (~ 4x4):
 		for (var i = 0; i < block.matrix.length; i++){
 		
 			var top_offset = i + top;
-			var horiz_line_id = 'tettis_horiz_line_' + this.matrix[top_offset][0];
+			var horiz_line_id = 'tetris_horiz_line_' + this.matrix[top_offset][0];
 			this.debug('horiz_line_id = ' + horiz_line_id + ', top_offset = ' + top_offset);
 			
 			for (var j = 0; j < block.matrix[0].length; j++){
@@ -153,7 +157,24 @@ PlayGround.prototype = {
 						}
 					}, horiz_line_id);
 					
+					
 				}
+			}
+			
+			// check whether current line if fully filled:
+			var full_flag = true;
+			// go through line cells::
+			for (var j = 1; j < this.matrix[0].length - 1; j++){
+				if (this.matrix[top_offset][j] == 0 || this.matrix[top_offset][j] == '#'){
+					full_flag = false;
+					break;
+				}
+			}
+			
+			// save id of line to be collapsed:
+			if (full_flag === true){
+				this.debug('-- the line #' + this.matrix[top_offset][0] + ' is full.');
+				full_line_nums.push(top_offset);
 			}
 		}
 			
@@ -162,6 +183,41 @@ PlayGround.prototype = {
 		var block_el = document.getElementById(block.id);
 		this.debug('removing: ' + block.id + ' from ' + this.domIds.block_field);
 		field_el.removeChild(block_el);
+		
+		// collapse full lines:
+		if (full_line_nums.length > 0){
+			var line_num;
+			var line_id;
+			var line_el;
+			for (var i in full_line_nums){
+				line_num = full_line_nums[i];
+				line_id = 'tetris_horiz_line_' + this.matrix[line_num][0];
+				line_el = document.getElementById(line_id);
+				field_el.removeChild(line_el);
+				this.debug('- line ' + line_id + ' was removed.');
+				
+			}
+			
+			// move upper lines down:
+			for (var k = full_line_nums[i] - 1; k >= 0; k--){
+				line_id = 'tetris_horiz_line_' + this.matrix[k][0];
+				
+				this.debug('- moving line ' + line_id + ' to ' + ((k+1) * this.cell_size) );
+				set_top(line_id, (k + 1) * this.cell_size);
+			}
+			
+			// remove a line from playground matrix:
+			for (var i in full_line_nums){
+				this.debug('-- remove line element from matrix: ' + full_line_nums[i]);
+				this.matrix.splice(full_line_nums[i], 1);
+				var new_id = this.matrix[0][0] + 1;
+				this.matrix.unshift([new_id, 0,0,0,0,0,0,0,0,0,0,'#']);
+				this.debug('-- add one line element into the begining with id = ' + new_id);
+				
+				// draw a new line:
+				this.draw_horiz_line(new_id, i);
+			}
+		}
 			
 		this.debug('','close');
 	},
