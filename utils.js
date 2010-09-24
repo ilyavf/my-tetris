@@ -1,3 +1,5 @@
+var DEBUG = false;
+
 Object.prototype.toString = function(){
 	var str = 'Object { ';
 	var delim = '';
@@ -117,7 +119,9 @@ function get_top(el, val){
 
 var debug_count = 0;
 var debug = function(txt, open){
-	//_debug('debug', txt, open);
+	if (DEBUG){
+		_debug('debug', txt, open);
+	}
 }
 
 var block_step = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -179,3 +183,28 @@ var MatrixTrans = function(matrix, direction){
 	return matrix_t;
 }
 
+// get DOM element:
+$ = function(id){
+	var el;
+	if (typeof id === 'string'){
+		el = document.getElementById(id); 
+		if (el == null){
+			debug('ERROR: cannot get element by id [' + id + ']');
+		}
+	}
+	this.el = el;
+	return el;
+}
+/*$.prototype.text = function(new_text, add){
+	var add = add || 0;
+	if (this.el === null){
+		return '';
+	}
+	if (typeof new_text === 'undefined'){
+		return this.el.innerHTML;
+	}
+	if (add === 0){
+		this.el.innerHTML = new_text;
+	}
+	this.el.innerHTML += new_text;
+}*/

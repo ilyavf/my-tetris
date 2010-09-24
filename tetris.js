@@ -14,6 +14,8 @@ var Tetris_start = function() {
 	debug('trans m1 #2 = ' + m1);*/
 	
 	//var key_proc = new KeyBd(this);
+	
+	//$('debug').innerHTML = 'test';
 
 }
 
@@ -74,7 +76,8 @@ var Tetris = function(){
 		
 		// temporaryly generate only 4 blocks:
 		i++;
-		if (i > 20){
+		if (i > 100){
+			alert('Sorry, debug version - the amount of blocks is limited to 100.');
 			debug( 'i=' + i + ', pg_matrix: ' + self.pg.matrix );
 			return 0;
 		}

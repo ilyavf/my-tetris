@@ -4,7 +4,8 @@ var PlayGround = function(domId, cwidth, cheight){
 	this.domIds		= {
 		main:			'tetris',
 		block_field: 	'tetris_field', 
-		hint: 			'tetris_hint'
+		hint: 			'tetris_hint', 
+		score: 			'tetris_score'
 	};
 	this.cwidth 	= cwidth  || 10;
 	this.cheight 	= cheight || 15;
@@ -12,6 +13,13 @@ var PlayGround = function(domId, cwidth, cheight){
 	
 	this.width	= this.cwidth * this.cell_size;
 	this.height	= this.cheight * this.cell_size;
+	
+	this.score = 0;
+	this.add_score = function(n){
+		var n = n || 1;
+		var score_step = 10;
+		this.score += score_step * n;
+	}
 
 	this.matrix = [];
 	this.init();
@@ -50,7 +58,10 @@ PlayGround.prototype = {
 		styles += '#' + this.domIds.block_field + 
 			'{border: 1px solid red; width:'+this.width+'px; height:'+this.height+'px; position: absolute; top:0px; left:30px;}\n';
 		styles += '#' + this.domIds.hint + 
-			'{border: 1px dotted green; width: 100px; height: 100px; position:absolute; top:60px; left: 260px;}\n';
+			'{border: 1px dotted green; width: 100px; height: 100px; position:absolute; top:10px; left: 260px;}\n';
+		styles += '#' + this.domIds.score +
+			'{border: 1px dotted green; width: 80px; height: 25px; position:absolute; top:140px; left: 260px; \n' +
+			'font-size: 30px; font-style: bold; text-align: right; padding: 10px;}\n';
 		styles += '</style>\n';
 		
 		createDom( {type: 'style', text: styles, prop:{id: 'tetris_styles'}} );
@@ -61,7 +72,10 @@ PlayGround.prototype = {
 				{type: 'div',
 				prop: {id: this.domIds.block_field}},
 				{type: 'div',
-				prop: {id: this.domIds.hint}}
+				prop: {id: this.domIds.hint}},
+				{type: 'div',
+				prop: {id: this.domIds.score},
+				text: this.score}
 			]
 		} );
 		
@@ -195,6 +209,10 @@ PlayGround.prototype = {
 				line_el = document.getElementById(line_id);
 				field_el.removeChild(line_el);
 				this.debug('- line ' + line_id + ' was removed.');
+				
+				// add score:
+				this.add_score();
+				$(this.domIds.score).innerHTML = this.score;
 				
 			}
 			
