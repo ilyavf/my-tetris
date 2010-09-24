@@ -59,15 +59,7 @@ var Tetris = function(){
 		
 	// @param: current_block
 	// @param: next_block
-	(function(current_block){
-		
-		// temporaryly generate only 4 blocks:
-		i++;
-		if (i > 30){
-			debug( 'i=' + i + ', pg_matrix: ' + self.pg.matrix );
-			return 0;
-		}
-		
+	(function(current_block){		
 		//block.current 	= current_block || null;
 		
 		// if its the first time:
@@ -79,6 +71,14 @@ var Tetris = function(){
 			self.pg.appendBlock(block.current);
 			block.current = block.next;
 		}
+		
+		// temporaryly generate only 4 blocks:
+		i++;
+		if (i > 10){
+			debug( 'i=' + i + ', pg_matrix: ' + self.pg.matrix );
+			return 0;
+		}
+
 		
 		//debug('i+1=' + (i+1) + ', types: ' + (Block.prototype.types.length) + ', type is ' + type + ':' + self.btypes[type]);
 		

@@ -67,6 +67,11 @@ PlayGround.prototype = {
 		
 		// draw lines to append block's cells:
 		this.draw_horiz_lines();
+		
+		// Styles for blocks:
+		var styles = ".block_cell{ \n" +
+			"border: 1px green solid; height: 16px; width: 16px;margin: 1px; position: absolute; }\n";
+		createDom( {type: 'style', text: styles, prop:{id: 'tetris_styles_block_cells'}} );
 	},
 	
 	draw_horiz_lines: function(){
@@ -79,7 +84,7 @@ PlayGround.prototype = {
 		
 		var line_mnt = this.matrix.length - 1;
 		for (var i = 0; i < line_mnt; i++){
-			this.draw_horiz_line(i, i);
+			this.draw_horiz_line(i+1, i);
 		}
 		this.debug('@draw_horiz_lines: ' + i + ' out of ' + line_mnt);
 	},
@@ -118,13 +123,46 @@ PlayGround.prototype = {
 		
 		this.debug('@[appendBlock]: coor=' + left + ', ' + top + ', type='+block.type + ', (' + block.coor.left() + ', ' + block.coor.top() + ')', 'open');
 		for (var i = 0; i < block.matrix.length; i++){
+		
+			var top_offset = i + top;
+			var horiz_line_id = 'tettis_horiz_line_' + this.matrix[top_offset][0];
+			this.debug('horiz_line_id = ' + horiz_line_id + ', top_offset = ' + top_offset);
+			
 			for (var j = 0; j < block.matrix[0].length; j++){
 				if (block.matrix[i][j] == 1){
-					this.debug('(' + (i+top) + ', ' + (j+left+1) + ')' );
-					this.matrix[i+top][j+left+1] = 1;
+				
+					var left_offset = j+left;
+					
+					this.debug('(' + top_offset + ', ' + left_offset + ')' );
+					this.matrix[top_offset][left_offset+1] = 1;
+					
+					
+					
+					// create DOM el - div inside horiz line:
+					var cell_id = 'horiz_line_' + horiz_line_id + '_cell_' + left_offset;
+					this.debug('- adding cell: ' + cell_id);
+					createDom({
+						type: 'div', 
+						prop: {
+							id: cell_id,
+							style: 'background: #ccc;' + //block.color+';' +
+								'top: 0;' + 
+								'left: ' + this.cell_size * left_offset + 'px;',
+							className: 'block_cell'
+							//, innerHTML: i+''+j
+						}
+					}, horiz_line_id);
+					
 				}
 			}
 		}
+			
+		// remove block from playground:
+		var field_el = document.getElementById(this.domIds.block_field);
+		var block_el = document.getElementById(block.id);
+		this.debug('removing: ' + block.id + ' from ' + this.domIds.block_field);
+		field_el.removeChild(block_el);
+			
 		this.debug('','close');
 	},
 	// @param block_info {new_coor, matrix}

@@ -11,7 +11,7 @@ var KeyBd = function(key_handle){
 	}
 
 	var eventHandle = function(e){
-		debug('keypressed: ' + e.charCode + ', ' + e.keyCode);
+		//debug('keypressed: ' + e.charCode + ', ' + e.keyCode);
 		if (typeof key_handle === 'undefined'){
 			debug('[KeyBd]: Error: no key event handle function is defined.');
 			return 0;

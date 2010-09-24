@@ -147,10 +147,10 @@ Block.prototype = {
 						type: 'div', 
 						prop: {
 							id: this.id + 'sq_' + i + j,
-							style: 'border: 1px green solid; height: 16px; width: 16px;margin: 1px; position: absolute; ' +
-								'background: #'+color+';' +
+							style: 'background: #'+color+';' +
 								'top: ' + this.pg.cell_size * i + 'px;' +
-								'left: ' + this.pg.cell_size * j + 'px;'
+								'left: ' + this.pg.cell_size * j + 'px;',
+							className: 'block_cell'
 							//, innerHTML: i+''+j
 						}
 					}, parent_id);
