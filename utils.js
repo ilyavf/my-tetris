@@ -117,7 +117,7 @@ function get_top(el, val){
 
 var debug_count = 0;
 var debug = function(txt, open){
-	_debug('debug', txt, open);
+	//_debug('debug', txt, open);
 }
 
 var block_step = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';

@@ -76,7 +76,7 @@ PlayGround.prototype = {
 	
 	draw_horiz_lines: function(){
 		var styles = ".horis_lines{ \n" +
-			"border: 1px red dotted; width: " + this.width + "px; height: " + this.cell_size + "px;\n" +
+			"border: 0px red dotted; width: " + this.width + "px; height: " + this.cell_size + "px;\n" +
 			"position: absolute; left: 0;\n" +
 			"margin:-1px 0 0px 0;}\n";
 			
@@ -98,8 +98,8 @@ PlayGround.prototype = {
 				id: "tetris_horiz_line_" + id_num,
 				style: "top: " + offset_px + "px;",
 				className: "horis_lines"
-			},
-			text: id_num
+			}
+			//,text: id_num
 		};
 		createDom(div_info, this.domIds.block_field);
 		//this.debug('@draw_horiz_line ('+id_num+', offset='+offset+')');
@@ -198,7 +198,7 @@ PlayGround.prototype = {
 				
 			}
 			
-			// move upper lines down:
+			// move upper lines down (starting from previous line):
 			for (var k = full_line_nums[i] - 1; k >= 0; k--){
 				line_id = 'tetris_horiz_line_' + this.matrix[k][0];
 				
