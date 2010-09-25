@@ -1,6 +1,13 @@
+//alert('userAgent=' + navigator.userAgent + ': ' +navigator.userAgent.indexOf("Firefox") );
+
 var KeyBd = function(key_handle){
-	var type = 'keypress';
-	var type = 'keydown';
+
+	// for firefox use keypress, otherwise use keydown:
+	if (navigator.userAgent.indexOf("Firefox") != -1) {
+		var type = 'keypress';
+	} else {
+		var type = 'keydown';
+	}
 
 	var key_map = {
 		'0_37': 'left',
