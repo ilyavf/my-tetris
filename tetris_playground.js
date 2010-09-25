@@ -203,7 +203,7 @@ PlayGround.prototype = {
 			var line_num;
 			var line_id;
 			var line_el;
-			for (var i in full_line_nums){
+			for (var i = 0; i < full_line_nums.length; i++){
 				line_num = full_line_nums[i];
 				line_id = 'tetris_horiz_line_' + this.matrix[line_num][0];
 				line_el = document.getElementById(line_id);
@@ -217,7 +217,7 @@ PlayGround.prototype = {
 			}
 			
 			// move upper lines down (starting from previous line):
-			for (var k = full_line_nums[i] - 1; k >= 0; k--){
+			for (var k = full_line_nums[i-1] - 1; k >= 0; k--){
 				line_id = 'tetris_horiz_line_' + this.matrix[k][0];
 				
 				this.debug('- moving line ' + line_id + ' to ' + ((k+1) * this.cell_size) );
@@ -225,7 +225,7 @@ PlayGround.prototype = {
 			}
 			
 			// remove a line from playground matrix:
-			for (var i in full_line_nums){
+			for (var i = 0; i < full_line_nums.length; i++){
 				this.debug('-- remove line element from matrix: ' + full_line_nums[i]);
 				this.matrix.splice(full_line_nums[i], 1);
 				var new_id = this.matrix[0][0] + 1;

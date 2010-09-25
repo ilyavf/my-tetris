@@ -1,5 +1,6 @@
 var KeyBd = function(key_handle){
 	var type = 'keypress';
+	var type = 'keydown';
 
 	var key_map = {
 		'0_37': 'left',
