@@ -209,19 +209,29 @@ PlayGround.prototype = {
 				line_el = document.getElementById(line_id);
 				field_el.removeChild(line_el);
 				this.debug('- line ' + line_id + ' was removed.');
-				
-				// add score:
-				this.add_score();
-				$(this.domIds.score).innerHTML = this.score;
-				
 			}
 			
+			// add score:
+			this.add_score(full_line_nums.length);
+			$(this.domIds.score).innerHTML = this.score;
+			
 			// move upper lines down (starting from previous line):
-			for (var k = full_line_nums[i-1] - 1; k >= 0; k--){
+			var ddy = 0;
+			for (var k = full_line_nums[i-1]; k >= 0; k--){
 				line_id = 'tetris_horiz_line_' + this.matrix[k][0];
 				
-				this.debug('- moving line ' + line_id + ' to ' + ((k+1) * this.cell_size) );
-				set_top(line_id, (k + 1) * this.cell_size);
+				
+				// skip lines that were removed together with one move:
+				if ($(line_id) === null){
+					ddy++;
+					this.debug('- skipping line #' + k + ' (' + line_id + ')');
+					continue;
+				}
+				
+				var dy = (k + ddy) * this.cell_size;
+				
+				this.debug('- moving line ' + line_id + ' to ' + dy + ' (with ddy=' + ddy + ')');
+				set_top(line_id, dy);
 			}
 			
 			// remove a line from playground matrix:
