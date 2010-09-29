@@ -219,8 +219,25 @@ Block.prototype = {
 	},
 	
 	rotate: function(direction){
-		this.matrix = MatrixTrans(this.matrix, direction);
-		this.redraw();
+		var new_matrix = MatrixTrans(this.matrix, direction);
+
+		// check whether new matrix is possible:
+		var block_info = {
+			new_coor: {
+				left: this.coor.left(),
+				top: this.coor.top()
+			},
+			matrix: new_matrix
+		}
+		
+		if (this.pg.isCellFree(block_info)){
+			this.debug('- rotatio is ok');
+			this.matrix = new_matrix;
+			this.redraw();
+			return 1;
+		}
+		this.debug('- this rotation is not possible now');
+		return 0;
 	},
 	
 	redraw: function(){
