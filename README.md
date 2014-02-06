@@ -7,3 +7,4 @@ This is a pure JS app, no libs used. I think all objects are instances and metho
 
 Plans:
 - Tony just gave me an idea for a next version: show part of a hidden picture when a block gets landed.
+- Also I was planning to rebuild the game using RxJS to see how well it works.
